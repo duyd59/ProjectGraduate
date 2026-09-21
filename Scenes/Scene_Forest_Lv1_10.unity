@@ -321,7 +321,7 @@ Transform:
   m_GameObject: {fileID: 207915378}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.626317, y: 0.9637136, z: 0.0694898}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1073,6 +1073,7 @@ MonoBehaviour:
   ColliderList:
   - {fileID: 1998445078}
   - {fileID: 1030900009}
+  - {fileID: 866294178}
   Boundary_ColliderList:
   - {fileID: 967864648}
 --- !u!61 &402722703
@@ -14632,6 +14633,7 @@ MonoBehaviour:
   ColliderList:
   - {fileID: 1998445078}
   - {fileID: 1030900009}
+  - {fileID: 866294178}
   Boundary_ColliderList:
   - {fileID: 967864648}
 --- !u!61 &1889015599

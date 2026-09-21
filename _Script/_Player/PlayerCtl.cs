@@ -9,6 +9,7 @@ public class PlayerCtl : MyObj
 {
     [SerializeField]protected DameSender dameSender;
     [SerializeField]public Player_ScripTble player_ScripTble;
+    public static PlayerCtl Instance { get; private set; }
 
     public override void LoadComponents()
     {
@@ -19,7 +20,13 @@ public class PlayerCtl : MyObj
     }
 
     protected virtual void LoadScene()
-    {
+    {   
+        if (Instance != null && Instance != this)
+        {
+            Destroy(transform.gameObject);
+            return;
+        }
+        PlayerCtl.Instance = this;
         DontDestroyOnLoad(transform.gameObject);
     }
 
