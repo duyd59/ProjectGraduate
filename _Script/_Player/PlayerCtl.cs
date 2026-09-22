@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cainos.PixelArtTopDown_Basic;
 using Unity.VisualScripting;
 using UnityEditor.Timeline;
 using UnityEngine;
@@ -16,18 +17,6 @@ public class PlayerCtl : MyObj
         base.LoadComponents();
         this.LoadDameSender();
         this.LoadScripTble();
-        this.LoadScene();
-    }
-
-    protected virtual void LoadScene()
-    {   
-        if (Instance != null && Instance != this)
-        {
-            Destroy(transform.gameObject);
-            return;
-        }
-        PlayerCtl.Instance = this;
-        DontDestroyOnLoad(transform.gameObject);
     }
 
     protected virtual void LoadDameSender()
@@ -53,8 +42,46 @@ public class PlayerCtl : MyObj
         if (coll.gameObject.CompareTag("LoadScene"))
         {
             SceneManager.LoadScene(coll.name);
+            Cmera_Target.Instance.LoadTarget(transform);
         }
         if (!(coll.gameObject.CompareTag("Enemy"))) return;
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        BindCamera();
+    }
+
+    private void Start()
+    {
+        BindCamera();
+    }
+
+    public void BindCamera()
+    {
+        Camera mainCam = Camera.main;
+
+        if (mainCam != null)
+        {
+            if (mainCam.TryGetComponent<Cmera_Target>(out var camFollow))
+            {
+                camFollow.LoadTarget(transform);
+                
+                Vector3 newCamPos = transform.position;
+                newCamPos.z = mainCam.transform.position.z; // Giữ nguyên trục Z của Camera
+                mainCam.transform.position = newCamPos;
+            }
+        }
     }
    
 }

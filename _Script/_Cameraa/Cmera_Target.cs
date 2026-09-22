@@ -4,24 +4,35 @@ using UnityEngine;
 
 public class Cmera_Target : MyObj
 {
-    [SerializeField]protected GameObject ObjTarget;
+    [SerializeField]protected Transform ObjTarget;
     [SerializeField]protected const float MinX = -8.5f;
     [SerializeField]protected const float MinY = -6.5f;
     [SerializeField]protected const float MaxX = 8.5f;
     [SerializeField]protected const float MaxY = 6.5f;
+    public static Cmera_Target Instance;
 
     public override void LoadComponents()
     {
         base.LoadComponents();
-        this.LoadTarget();
+        this.LoadInstance();
     }
 
-    protected virtual void LoadTarget()
+    protected virtual void LoadInstance()
+    {
+        if(Cmera_Target.Instance == null) Cmera_Target.Instance = this;
+    }
+
+
+    public virtual void LoadTarget(Transform Obj)
     {
         if(this.ObjTarget == null)
         {
-            this.ObjTarget = GameObject.FindGameObjectWithTag("Player");
+            if (Obj.gameObject.CompareTag("Player"))
+            {
+                this.ObjTarget = Obj;
+            }
         }
+        
     }
 
     protected virtual void Update()
