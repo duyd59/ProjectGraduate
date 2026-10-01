@@ -5,7 +5,8 @@ using UnityEngine;
 public class SpawnPlayer : Spawner
 {
     [SerializeField]protected  Vector3 VtSpawn = new Vector3(0f,0f,0f);
-    public static SpawnPlayer Instance { get; private set; }
+    [SerializeField]public Transform CurrentPlayer;
+
 
     public override void LoadComponents()
     {
@@ -31,8 +32,8 @@ public class SpawnPlayer : Spawner
 
     protected virtual void SpawnObj()
     {
-        Transform Obj = this.ListObj[0];
-        Transform Player = this.Spawning(Obj,Obj.position,Obj.rotation);
+        this.CurrentPlayer = this.ListObj[0];
+        Transform Player = this.Spawning(this.CurrentPlayer,this.CurrentPlayer.position,this.CurrentPlayer.rotation);
         Cmera_Target.Instance.LoadTarget(Player);
     }
 }

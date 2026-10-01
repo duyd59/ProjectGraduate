@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
 
-public class Movement : MyObj
+public class MovementPlayer : MyObj
 {
     [SerializeField]protected Rigidbody2D rigi;
     [SerializeField]protected CapsuleCollider2D capsule;

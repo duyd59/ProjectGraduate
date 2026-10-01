@@ -6,7 +6,21 @@ public class Spawner : MyObj
 {
     [SerializeField]protected List<Transform> ListObj;
     [SerializeField]protected List<Transform> ListLoop;
+    [SerializeField]protected List<Enemy_ScripTble> ListEnemy_ScripTble;
+
     [SerializeField]protected Transform Holder;
+    public static Spawner Instance;
+
+    public override void Awake()
+    {
+        base.Awake();
+        this.LoadInstance();
+    }
+
+    protected virtual void LoadInstance()
+    {
+        if(Spawner.Instance == null ) Spawner.Instance = this;
+    }
 
     public override void LoadComponents()
     {

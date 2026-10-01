@@ -4,19 +4,43 @@ using Cainos.PixelArtTopDown_Basic;
 using Unity.VisualScripting;
 using UnityEditor.Timeline;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
 public class PlayerCtl : MyObj
 {
     [SerializeField]protected DameSender dameSender;
     [SerializeField]public Player_ScripTble player_ScripTble;
+    [SerializeField]protected GameObject KeyTutorial;
+    [SerializeField]protected SpawnPlayer spawnPlayer;
+    [SerializeField]protected Vector3 SppearPos;
     public static PlayerCtl Instance { get; private set; }
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        BindCamera();
+    }
 
     public override void LoadComponents()
     {
         base.LoadComponents();
         this.LoadDameSender();
         this.LoadScripTble();
+        this.LoadSpawnPlayer();
+    }
+
+    protected virtual void LoadSpawnPlayer()
+    {
+        if(this.spawnPlayer == null) this.spawnPlayer = transform.parent.GetComponentInParent<SpawnPlayer>();
     }
 
     protected virtual void LoadDameSender()
@@ -41,26 +65,30 @@ public class PlayerCtl : MyObj
         this.dameSender.SendDame(transform);
         if (coll.gameObject.CompareTag("LoadScene"))
         {
-            SceneManager.LoadScene(coll.name);
-            Cmera_Target.Instance.LoadTarget(transform);
+            if(coll.name == "Scene_Tutorial")
+            {
+                if(this.KeyTutorial == null)
+                {
+                    SceneManager.LoadScene(coll.name);
+                    this.SppearPos = new Vector3(-7.5f,0f,0f);
+                }
+                else
+                {
+                    SceneManager.LoadScene(coll.name);
+                    this.SppearPos = new Vector3(-7.5f,0f,0f);
+                }
+            }
+            else
+            {
+                SceneManager.LoadScene(coll.name);
+                Cmera_Target.Instance.LoadTarget(transform);
+                this.SppearPos = new Vector3(-15f,0f,0f);
+            }
         }
         if (!(coll.gameObject.CompareTag("Enemy"))) return;
     }
 
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        BindCamera();
-    }
+    
 
     private void Start()
     {
@@ -69,6 +97,12 @@ public class PlayerCtl : MyObj
 
     public void BindCamera()
     {
+        if(this.spawnPlayer.CurrentPlayer != null)
+        {
+            transform.position = this.SppearPos;
+        }
+        transform.position = new Vector3(0f,0f,0f);
+
         Camera mainCam = Camera.main;
 
         if (mainCam != null)
