@@ -6,30 +6,20 @@ using UnityEngine.SceneManagement;
 public class SpawnTutorial : Spawner
 {
     [SerializeField]protected List<Transform> ListSpawnPoint;
-    [SerializeField]protected int CountCurrentEnemy;
-    [SerializeField]protected TutorialCtl tutorialCtl;
     public override void LoadComponents()
     {
         base.LoadComponents();
         this.LoadEnemy_ScripTble();
         this.LoadSpawnPoint();
-        this.LoadEnemyCtl();
-
     }
 
-    protected virtual void LoadEnemyCtl()
+    public override void Awake()
     {
-        if(this.tutorialCtl == null)
-        {
-            Transform Obj = transform.Find("Prefabs");
-            foreach(Transform trans in Obj)
-            {
-                
-                this.tutorialCtl = trans.GetComponent<TutorialCtl>();
-            }
-            
-        }
+        base.Awake();
+        this.LoadSpawnPoint();
     }
+
+
     protected virtual void LoadEnemy_ScripTble(){
         if(this.ListEnemy_ScripTble.Count > 0) return;
         foreach(Transform trans in this.ListObj)
@@ -40,12 +30,15 @@ public class SpawnTutorial : Spawner
         
     }
 
+
     protected virtual void LoadSpawnPoint(){
         if(this.ListSpawnPoint.Count > 0) return;
         Transform Obj = transform.Find("SpawnPoint");
         foreach(Transform trans in Obj)
         {
             this.ListSpawnPoint.Add(trans);
+            this.DicSpawnObj[trans] = null;
+
         }
     }
 
@@ -68,17 +61,20 @@ public class SpawnTutorial : Spawner
 
     protected virtual void SpawnMonster(int Indx)
     {
-        foreach(Transform trans in this.ListSpawnPoint)
+        if (this.CountCurrentObj >= this.ListEnemy_ScripTble[Indx].EnemyCount) return;
+        foreach (Transform trans in this.ListSpawnPoint)
         {
-            if(this.CountCurrentEnemy < this.ListSpawnPoint.Count){
+            if (this.DicSpawnObj[trans] == null)
+            {
                 Vector3 Point = trans.position;
                 Transform Obj = this.ListObj[Indx];
-                //this.tutorialCtl.SetSpawnPoint(Point);
-                for(int i = 0;i < this.ListEnemy_ScripTble[Indx].EnemyCount; i++)
-                {
-                    this.Spawning(Obj,Point,Obj.rotation);
-                    this.CountCurrentEnemy++;
-                }
+
+                Transform DicValue = this.Spawning(Obj, Point, Obj.rotation);
+                this.DicSpawnObj[trans] = DicValue;
+                //DicValue.gameObject.SetActive(true);
+                this.CountCurrentObj++;
+
+                break; 
             }
         }
         

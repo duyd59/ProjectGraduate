@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class Spawner : MyObj
 {
+
     [SerializeField]protected List<Transform> ListObj;
     [SerializeField]protected List<Transform> ListLoop;
+    [SerializeField]protected Dictionary<Transform,Transform> DicSpawnObj = new Dictionary<Transform, Transform>();
+    
+    [SerializeField]public int CountCurrentObj;
     [SerializeField]protected List<Enemy_ScripTble> ListEnemy_ScripTble;
+    public List<Enemy_ScripTble> listEnemy_ScripTble => ListEnemy_ScripTble;
 
     [SerializeField]protected Transform Holder;
     public static Spawner Instance;
@@ -73,11 +78,15 @@ public class Spawner : MyObj
         {
             foreach(Transform trans in this.ListLoop)
             {
-                if(trans == Obj)
+                if(trans.name == Obj.name )
                 {
+                    Debug.Log("few");
                     trans.position = ObjPos;
                     trans.rotation = ObjRotation;
+                    this.DicSpawnObj[trans] = trans;
                     this.ListLoop.Remove(trans);
+        trans.gameObject.SetActive(true);
+
                     return trans;
                 }
             }
@@ -101,5 +110,21 @@ public class Spawner : MyObj
         }
 
         return null;
+    }
+
+    public virtual void AddPool(Transform trans)
+    {
+        this.ListLoop.Add(trans);
+        if (this.DicSpawnObj.ContainsValue(trans))
+        {
+            foreach(Transform dictrans in new List<Transform>(this.DicSpawnObj.Keys))
+            {
+                if(this.DicSpawnObj[dictrans] == trans)
+                {
+                    this.DicSpawnObj[dictrans] = null;
+                }
+            }
+        }
+
     }
 }

@@ -62,7 +62,7 @@ public class PlayerCtl : MyObj
 
     protected virtual void OnTriggerEnter2D(Collider2D coll)
     {
-        this.dameSender.SendDame(transform);
+        this.dameSender.SendDame(coll.transform);
         if (coll.gameObject.CompareTag("LoadScene"))
         {
             if(coll.name == "Scene_Tutorial")

@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Tutorial
   m_EditorClassIdentifier: 
   Level: 1
-  CurrentHp: 100
+  CurrentHp: 10
   Dmae: 0
-  MaxHp: 100
+  MaxHp: 10
   Amor: 0
-  EnemyCount: 1
+  EnemyCount: 4
   SpawnInterval: 0

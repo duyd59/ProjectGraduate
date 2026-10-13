@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 public class SpawnEnemy : Spawner
 {
     [SerializeField]protected List<Transform> ListSpawnPoint;
-    [SerializeField]protected int CountCurrentEnemy;
     [SerializeField]protected EnemyCtl enemyCtl;
     public override void LoadComponents()
     {
@@ -68,14 +67,14 @@ public class SpawnEnemy : Spawner
 
     protected virtual void SpawnMonster(int Indx)
     {
-        if(this.CountCurrentEnemy < this.ListEnemy_ScripTble[Indx].EnemyCount){
+        if(this.CountCurrentObj < this.ListEnemy_ScripTble[Indx].EnemyCount){
             Vector3 Point = this.GetPoint();
             Transform Obj = this.ListObj[Indx];
             this.enemyCtl.SetSpawnPoint(Point);
             for(int i = 0;i < this.ListEnemy_ScripTble[Indx].EnemyCount; i++)
             {
                 this.Spawning(Obj,Point,Obj.rotation);
-                this.CountCurrentEnemy++;
+                this.CountCurrentObj++;
             }
         }
     }

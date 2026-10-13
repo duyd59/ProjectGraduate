@@ -29,10 +29,10 @@ public class DameSender : DameManager
     // }
     public virtual void SendDame(Transform Enemy)
     {
-        DameReceiver ObjDame = Enemy.GetComponentInChildren<DameReceiver>();
+        EnemyDameReceiver ObjDame = Enemy.GetComponentInChildren<EnemyDameReceiver>();
         if(ObjDame != null)
         {
-            ObjDame.Deduct(this.playerCtl.player_ScripTble.Dmae);
+            ObjDame.DeductHP();
         }
     }
 }
