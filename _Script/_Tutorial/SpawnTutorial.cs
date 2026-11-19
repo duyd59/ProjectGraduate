@@ -11,15 +11,31 @@ public class SpawnTutorial : Spawner
         base.LoadComponents();
         this.LoadEnemy_ScripTble();
         this.LoadSpawnPoint();
+        this.LoadDic();
     }
 
-    public override void Awake()
+    // public override void Awake()
+    // {
+    //     base.Awake();
+    //     this.LoadSpawnPoint();
+    // }
+
+    protected virtual void LoadDic()
     {
-        base.Awake();
-        this.LoadSpawnPoint();
+        Transform Obj = transform.Find("SpawnPoint");
+        foreach(Transform trans in Obj)
+        {
+            if (this.DicSpawnObj.ContainsKey(trans) == false)
+            {
+                this.DicSpawnObj.Add(trans, null);
+            }
+            else
+            {
+                this.DicSpawnObj[trans] = null;
+            }
+
+        }
     }
-
-
     protected virtual void LoadEnemy_ScripTble(){
         if(this.ListEnemy_ScripTble.Count > 0) return;
         foreach(Transform trans in this.ListObj)
@@ -37,8 +53,6 @@ public class SpawnTutorial : Spawner
         foreach(Transform trans in Obj)
         {
             this.ListSpawnPoint.Add(trans);
-            this.DicSpawnObj[trans] = null;
-
         }
     }
 
@@ -46,6 +60,11 @@ public class SpawnTutorial : Spawner
     {
         if(SceneManager.GetActiveScene().name == "Scene_Village" || SceneManager.GetActiveScene().name == "Scene_Start") return;
         StartCoroutine(this.SpawnRoutine());
+        // if(this.DicSpawnObj.Count <= 0)
+        // {
+        //     this.LoadSpawnPoint();
+        // }
+
     }
 
     private IEnumerator SpawnRoutine()
@@ -62,7 +81,7 @@ public class SpawnTutorial : Spawner
     protected virtual void SpawnMonster(int Indx)
     {
         if (this.CountCurrentObj >= this.ListEnemy_ScripTble[Indx].EnemyCount) return;
-        foreach (Transform trans in this.ListSpawnPoint)
+        foreach (Transform trans in this.DicSpawnObj.Keys)
         {
             if (this.DicSpawnObj[trans] == null)
             {

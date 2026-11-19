@@ -63,7 +63,7 @@ public class EnemyDameReceiver : MyObj
         if(this.Isdead == true)
         {
             transform.parent.gameObject.SetActive(false);
-            this.spawner.AddPool(transform.parent);
+            this.spawner.AddPoolByTutorial(transform.parent);
             this.spawner.CountCurrentObj--;
             this.Isdead= false;
 

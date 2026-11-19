@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class SpawnEnemy : Spawner
 {
-    [SerializeField]protected List<Transform> ListSpawnPoint;
+    [SerializeField]public List<Transform> ListSpawnPoint;
     [SerializeField]protected EnemyCtl enemyCtl;
     public override void LoadComponents()
     {

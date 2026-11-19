@@ -5,27 +5,16 @@ using UnityEngine;
 public class Spawner : MyObj
 {
 
-    [SerializeField]protected List<Transform> ListObj;
+    [SerializeField]public List<Transform> ListObj;
     [SerializeField]protected List<Transform> ListLoop;
     [SerializeField]protected Dictionary<Transform,Transform> DicSpawnObj = new Dictionary<Transform, Transform>();
-    
     [SerializeField]public int CountCurrentObj;
     [SerializeField]protected List<Enemy_ScripTble> ListEnemy_ScripTble;
     public List<Enemy_ScripTble> listEnemy_ScripTble => ListEnemy_ScripTble;
 
-    [SerializeField]protected Transform Holder;
-    public static Spawner Instance;
+    [SerializeField]public Transform Holder;
 
-    public override void Awake()
-    {
-        base.Awake();
-        this.LoadInstance();
-    }
 
-    protected virtual void LoadInstance()
-    {
-        if(Spawner.Instance == null ) Spawner.Instance = this;
-    }
 
     public override void LoadComponents()
     {
@@ -85,7 +74,7 @@ public class Spawner : MyObj
                     trans.rotation = ObjRotation;
                     this.DicSpawnObj[trans] = trans;
                     this.ListLoop.Remove(trans);
-        trans.gameObject.SetActive(true);
+                    trans.gameObject.SetActive(true);
 
                     return trans;
                 }
@@ -94,7 +83,7 @@ public class Spawner : MyObj
 
         Transform NewObj = Instantiate(Obj,ObjPos,ObjRotation);
         NewObj.name = Obj.name;
-        NewObj.SetParent(this.Holder);
+        NewObj.SetParent(this.Holder,false);
         NewObj.gameObject.SetActive(true);
         return NewObj;
     }
@@ -114,6 +103,12 @@ public class Spawner : MyObj
 
     public virtual void AddPool(Transform trans)
     {
+        this.ListLoop.Add(trans);
+
+    }
+    public virtual void AddPoolByTutorial(Transform trans)
+    {
+        Debug.Log("svsd");
         this.ListLoop.Add(trans);
         if (this.DicSpawnObj.ContainsValue(trans))
         {

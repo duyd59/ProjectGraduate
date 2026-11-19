@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 171bda17011a2bf4088d37642092c1ca, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
-  DefaultHp: 50
+  Level: 1
+  CurrentHp: 100
+  Dmae: 1
+  MaxHp: 100
+  Amor: 10

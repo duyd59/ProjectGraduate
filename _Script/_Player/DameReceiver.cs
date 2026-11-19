@@ -6,7 +6,7 @@ public class DameReceiver : DameManager
 {
     
     [SerializeField]protected bool Isdead;
-    // [SerializeField]protected float currentHp;
+    [SerializeField]protected float currentHp;
     // public float CurrentHp => currentHp;
 
     // [SerializeField]protected float hpMax;
@@ -26,6 +26,7 @@ public class DameReceiver : DameManager
     protected virtual void LoadHp()
     {
         this.playerCtl.player_ScripTble.ResetInfo();
+        this.currentHp = this.playerCtl.player_ScripTble.CurrentHp;
     }
 
     public virtual void Deduct(float Hp)
@@ -33,7 +34,8 @@ public class DameReceiver : DameManager
         if(this.playerCtl.player_ScripTble.CurrentHp <= 0) this.Isdead = true;
         else
         {
-            this.playerCtl.player_ScripTble.CurrentHp-=Hp;
+            Debug.Log("890");
+            this.currentHp-=Hp;
         }
     }
 

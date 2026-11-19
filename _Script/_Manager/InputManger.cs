@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 
 public class InputManger : MyObj
@@ -12,8 +14,16 @@ public class InputManger : MyObj
     public float Vertical => vertical;
     [SerializeField]protected bool leftMouse;
     public bool LeftMouse => leftMouse;
+    [SerializeField]public bool DirectionDame = false;
     [SerializeField]protected bool rightMouse;
     public bool RightMouse => rightMouse;
+    [SerializeField]protected bool dig;
+    public bool Dig => dig;
+
+    [SerializeField]protected bool plant;
+    public bool Plant => plant;
+    [SerializeField]protected bool harvest;
+    public bool Harvest => harvest;
 
     public override void Awake()
     {
@@ -30,6 +40,9 @@ public class InputManger : MyObj
     {
         this.LoadUnitMovement();
         this.LoadMouse();
+        this.LoadDig();
+        this.LoadPlant();
+        this.LoadHarvesrt();
     }
 
     protected virtual void LoadUnitMovement()
@@ -40,17 +53,61 @@ public class InputManger : MyObj
 
     protected virtual void LoadMouse()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0) && this.leftMouse == false)
         {
             this.leftMouse = true;
+            this.DirectionDame = false;
         }
 
-        if(Input.GetMouseButtonUp(0)) this.leftMouse = false;
-        if (Input.GetMouseButton(1))
+        if(Input.GetMouseButtonUp(0)  && this.leftMouse == true) {
+            this.leftMouse = false;
+            this.DirectionDame = true;
+        }
+        if (Input.GetMouseButtonDown(1) && this.rightMouse == false)
         {
             this.rightMouse = true;
+            this.DirectionDame = false;
         }
 
-        if(Input.GetMouseButtonUp(1)) this.rightMouse = false;
+        if(Input.GetMouseButtonUp(1)){ 
+            this.rightMouse = false;
+            this.DirectionDame = true;
+        }
+    }
+
+    protected virtual void LoadDig()
+    {
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            this.dig = true;
+        }
+        if (Input.GetKeyUp(KeyCode.C))
+        {
+            this.dig = false;
+        }
+    }
+
+    protected virtual void LoadHarvesrt()
+    {
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            this.harvest = true;
+        }
+        if (Input.GetKeyUp(KeyCode.X))
+        {
+            this.harvest = false;
+        }
+    }
+
+    protected virtual void LoadPlant()
+    {
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            this.plant = true;
+        }
+        if (Input.GetKeyUp(KeyCode.V))
+        {
+            this.plant = false;
+        }
     }
 }

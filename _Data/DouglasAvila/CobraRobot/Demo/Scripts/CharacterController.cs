@@ -22,10 +22,10 @@ namespace DouglasAvila.CobraRobot.Scripts
         [SerializeField] private float rangedAttackRecoveringTimer = 0.3f;
 
 
-        private SpriteRenderer _spriteRenderer;
-        private Animator _animator;
-        private Rigidbody2D _rigidbody;
-        private GroundCollider _groundCollider;
+        [SerializeField]protected SpriteRenderer _spriteRenderer;
+        [SerializeField]protected Animator _animator;
+        [SerializeField]protected Rigidbody2D _rigidbody;
+        //[SerializeField]protected GroundCollider _groundCollider;
 
         // Inputs
         private float _inputHorizontalMovementDirection = 0f;
@@ -64,7 +64,7 @@ namespace DouglasAvila.CobraRobot.Scripts
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _animator = GetComponent<Animator>();
             _rigidbody = GetComponent<Rigidbody2D>();
-            _groundCollider = transform.Find("GroundCollider").GetComponent<GroundCollider>();
+            //_groundCollider = transform.Find("GroundCollider").GetComponent<GroundCollider>();
         }
         
         void Update()
@@ -104,16 +104,12 @@ namespace DouglasAvila.CobraRobot.Scripts
          */
         private void HandleCollisions()
         {
-            _isGrounded = _groundCollider.IsColliding();
+            //_isGrounded = _groundCollider.IsColliding();
         }
       
         
         private void HandleAnimationsParameters()
         {
-            _animator.SetFloat("velocityX", _rigidbody.velocity.x);
-            _animator.SetFloat("velocityY", _rigidbody.velocity.y);
-            _animator.SetBool("isHorizontalMoving", _isHorizontalMoving);
-            _animator.SetBool("isGrounded", _isGrounded);
             _animator.SetInteger("meleeAttackComboCount", _meleeAttackComboCount);
 
             if (_jump)
@@ -194,7 +190,7 @@ namespace DouglasAvila.CobraRobot.Scripts
             InterruptRangeAttacking();
             InterruptMeleeAttacking();
             
-            _groundCollider.Disable(0.2f);
+            //_groundCollider.Disable(0.2f);
             _disableMovementTimer = 0;
             _jump = true;
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, jumpForce);
@@ -270,7 +266,7 @@ namespace DouglasAvila.CobraRobot.Scripts
                 _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
             }
             _isHorizontalMoving = false;
-            _meleeAttack = true;
+            //_meleeAttack = true;
             _isMeleeAttacking = true;
 
         }

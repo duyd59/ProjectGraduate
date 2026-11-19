@@ -5,34 +5,33 @@ using UnityEngine;
 
 public class DameSender : DameManager
 {
-    // [SerializeField]protected DameReceiver dameReceiver;
-
-    // public override void LoadComponents()
-    // {
-    //     base.LoadComponents();
-    //     this.LoadDameReceiver();
-    // }
-
-    // protected virtual void LoadDameReceiver()
-    // {
-    //     if(this.dameReceiver == null)
-    //     {
-    //         GameObject Obj = GameObject.Find("Player");
-    //         foreach(Transform trans in Obj.transform)
-    //         {
-    //             if(trans.name == "DameReceiver")
-    //             {
-    //                 this.dameReceiver = trans.GetComponent<DameReceiver>();
-    //             }
-    //         }
-    //     }
-    // }
     public virtual void SendDame(Transform Enemy)
     {
         EnemyDameReceiver ObjDame = Enemy.GetComponentInChildren<EnemyDameReceiver>();
+        Boss1_DameReceiver DameBoss = Enemy.GetComponentInChildren<Boss1_DameReceiver>();
+        Boss2EDameREceiver boss2EDameREceiver = Enemy.GetComponentInChildren<Boss2EDameREceiver>();
         if(ObjDame != null)
         {
-            ObjDame.DeductHP();
+            if(InputManger.Instance.RightMouse == true || InputManger.Instance.LeftMouse == true)
+            {
+                ObjDame.DeductHP();
+            }
+        }
+
+        if(DameBoss != null)
+        {
+            if(InputManger.Instance.RightMouse == true || InputManger.Instance.LeftMouse == true)
+            {
+                DameBoss.Deduct(1f);
+            }
+        }
+        if(boss2EDameREceiver != null)
+        {
+            if(InputManger.Instance.RightMouse == true || InputManger.Instance.LeftMouse == true)
+            {
+
+                boss2EDameREceiver.DeductHP(1f);
+            }
         }
     }
 }

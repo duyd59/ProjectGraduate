@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Video;
 
 public class Movement : MyObj
@@ -51,13 +53,28 @@ public class Movement : MyObj
     protected virtual void ControlFace()
     {
         Vector3 FacePos = transform.parent.localScale;
-        if(InputManger.Instance.Horizontal < 0 && transform.parent.localScale.x >0)
+        if(SceneManager.GetActiveScene().name == "Scene_Farme")
         {
-            transform.parent.localScale = new Vector3(FacePos.x*-1,FacePos.y,FacePos.z);
+            if(InputManger.Instance.Horizontal > 0 && transform.parent.localScale.x >0)
+            {
+             transform.parent.localScale = new Vector3(FacePos.x*-1,FacePos.y,FacePos.z);
+            }
+            if(InputManger.Instance.Horizontal < 0&& transform.parent.localScale.x <0)
+            {
+                transform.parent.localScale = new Vector3(FacePos.x*-1,FacePos.y,FacePos.z);;
+            }
         }
-        if(InputManger.Instance.Horizontal > 0&& transform.parent.localScale.x <0)
+
+        else
         {
-            transform.parent.localScale = new Vector3(FacePos.x*-1,FacePos.y,FacePos.z);;
+            if(InputManger.Instance.Horizontal < 0 && transform.parent.localScale.x >0)
+            {
+             transform.parent.localScale = new Vector3(FacePos.x*-1,FacePos.y,FacePos.z);
+            }
+            if(InputManger.Instance.Horizontal > 0&& transform.parent.localScale.x <0)
+            {
+                transform.parent.localScale = new Vector3(FacePos.x*-1,FacePos.y,FacePos.z);;
+            }   
         }
     }
 
