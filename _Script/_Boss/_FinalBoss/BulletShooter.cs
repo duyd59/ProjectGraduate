@@ -32,12 +32,12 @@ public class BulletShooter : SkillFinalBoss1
             DirectionPos = this.boss1_GManager.TargetObj.position -this.spawnBullet.BulletPos2;
             
         }
-        transform.position += (this.DirectionPos*Time.fixedDeltaTime*2f);
+        transform.position += (this.DirectionPos*Time.fixedDeltaTime*5f);
         
         float distance = Vector3.Distance(transform.position,this.DirectionPos);
         if(distance >= 50)
         {
-            this.spawnByBoss1.AddPool(transform);
+            this.spawnBullet.AddPool(transform);
             transform.gameObject.SetActive(false);
         }
     }

@@ -2,13 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 public class FarmeManager : MyObj
 {
-    [SerializeField]protected Farme_ScipTble farme_ScipTble;
+    [SerializeField]public Farme_ScipTble farme_ScipTble;
+    [SerializeField]public LocalsaveManager LocalsaveManager;
     [SerializeField]public float CurrentXp;
     [SerializeField]protected int FarmeLv;
 
+    public override void Awake()
+    {
+        base.Awake();
+        this.LoadJson();
+    }
+
+    protected virtual void LoadJson()
+    {
+        if(this.LocalsaveManager != null)
+        {
+            FarmeSaveDate date = this.LocalsaveManager.LoadFromJson();
+
+            this.farme_ScipTble.Meat = date.Meat;
+            this.farme_ScipTble.Fur = date.Fur;
+            this.farme_ScipTble.Flower = date.Flower;
+            this.farme_ScipTble.CurrentXP = date.CurretXp;
+            this.farme_ScipTble.FarmeLv = date.FarmeLevel;
+        }
+    }
     public override void LoadComponents()
     {
         base.LoadComponents();
@@ -23,12 +44,10 @@ public class FarmeManager : MyObj
     protected virtual void UpgradeLv()
     {
         
-        if(this.CurrentXp >= this.farme_ScipTble.MaxXp)
+        if(this.farme_ScipTble.CurrentXP >= this.farme_ScipTble.MaxXp)
         {
             this.farme_ScipTble.SetMaxXp();
-            this.CurrentXp -= this.farme_ScipTble.CurrentXP;
-            this.FarmeLv = this.farme_ScipTble.CurrentLv;
-            if(this.FarmeLv>=this.farme_ScipTble.MaxLv) return;
+            if(this.farme_ScipTble.FarmeLv>=this.farme_ScipTble.MaxLv) return;
             
         }
     }
@@ -39,11 +58,6 @@ public class FarmeManager : MyObj
             string Obj = transform.name;
             this.farme_ScipTble = Resources.Load<Farme_ScipTble>("_Farme/" + Obj);
         }
-        else
-        {
-            this.farme_ScipTble.SetMaxXp();
-            this.CurrentXp = this.farme_ScipTble.CurrentXP;
-            this.FarmeLv = this.farme_ScipTble.CurrentLv;
-        }
+        if(this.LocalsaveManager == null) this.LocalsaveManager = transform.GetComponent<LocalsaveManager>();
     }
 }

@@ -8,7 +8,6 @@ using UnityEngine.Assertions.Must;
 public class Boss1_Ctl : MyObj
 {
     [SerializeField]protected Boss1_DameSender boss1_DameSender;
-    [SerializeField]protected CircleCollider2D circleCollider2D;
     [SerializeField]protected BoxCollider2D boxCollider2D;
     [SerializeField]public Animator _animator;
     [SerializeField]public Boss1_GManager boss1_GManager;
@@ -16,44 +15,24 @@ public class Boss1_Ctl : MyObj
     [SerializeField]protected LayerMask Playermask;
     [SerializeField]protected float range = 0.5f;
     [SerializeField]protected Transform ObjDame;
-    [Header("Melee Attack")]
-    [SerializeField] private bool onlyMeleeAttackOnGround = false;
+
     [SerializeField]public bool _Issender;
     [SerializeField]protected bool _IsOnDuration;
-    [SerializeField] private int maxMeleeAttackComboCount = 1;
-    [SerializeField] private float maxMeleeComboExpireTimer = 0.2f;
-    [SerializeField] private float maxMeleeAttackInputBuffer = 0.2f;
-    [SerializeField] private float meleeAttackRecoveringTimer = 0.5f;
-    [Header("Range Attack")]
-    [SerializeField] private bool onlyRangeAttackOnGround = false;
-    [SerializeField] private float rangedAttackRecoveringTimer = 0.3f;
 
     [SerializeField]public bool Boss_ismoving;
 
-    [SerializeField]protected SpriteRenderer _spriteRenderer;
     [SerializeField]protected Rigidbody2D _rigidbody;
-    // Melee Attack
-    private bool _isMeleeAttacking = false;
-    public bool _meleeAttack = false;
-    private int _meleeAttackComboCount = 0;
-    private float _meleeComboExpireTimer = 0f;
-    private float _meleeAttackInputBufferTimer = 0f;
-    private float _timeAttack;
-    private bool _IsAttack;
-        
-    // Range Attack
-    private bool _rangeAttack = false;
+    private float _timeAttack;        
 
         
     public override void LoadComponents()
     {
         base.LoadComponents();
+        this.LoadBoxCollider();
         this.LoadAnimations();
         this.LoadDameSender();
-        this.LoadCollider2D();
         this.LoadTble();
         this.LoadMask();
-        this.LoadBoxCollider();
         this.LoadBossManager();
     }
 
@@ -70,13 +49,10 @@ public class Boss1_Ctl : MyObj
         }
     }
 
-    protected virtual void LoadCollider2D()
-    {
-        if(this.circleCollider2D == null) this.circleCollider2D = transform.GetComponent<CircleCollider2D>();
-    }
 
     protected virtual void LoadBoxCollider(){
         if(this.boxCollider2D == null) this.boxCollider2D = transform.GetComponent<BoxCollider2D>();
+        if(this._rigidbody ==null) this._rigidbody = transform.GetComponent<Rigidbody2D>();
     }
     protected virtual void LoadAnimations()
     {
@@ -91,18 +67,15 @@ public class Boss1_Ctl : MyObj
     }
     void Start()
     {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-        _rigidbody = GetComponent<Rigidbody2D>();
         this.Boss_ismoving = true;
+        this._IsOnDuration = false;
     }
         
     void Update()
     {
-        GetInput();
-        HandleAnimationsParameters();
+        this.GetInput();
         this.IsAttack();
-        //HandleRangeAttack();
-        //HandleMeleeAttack();
+        this.SetAni();
     }
 
     protected virtual void LoadBossManager()
@@ -110,129 +83,40 @@ public class Boss1_Ctl : MyObj
         if(this.boss1_GManager == null) this.boss1_GManager = transform.parent.GetComponent<Boss1_GManager>();
     }
 
-       
-
+    protected virtual void SetAni()
+    {
+        Debug.Log(this._IsOnDuration);
+        this._animator.SetBool("_IsattackRight",this._IsOnDuration);
+    }
     private void GetInput()
     {
+        this._rigidbody.velocity = Vector2.zero; // Dùng rb.velocity = Vector2.zero nếu ở Unity 2022 trở xuống
+        this._rigidbody.angularVelocity = 0f;
         this._timeAttack+=Time.fixedDeltaTime;
         if(this.boss1_GManager.TargetObj == null) return;
         float DistanceAttack = Vector3.Distance(transform.position,this.boss1_GManager.TargetObj.position);
 
         if(this._timeAttack >= this.Boss_ScripTble._TimeAttack)
         {
-            if(DistanceAttack <= 4f)
+            if(DistanceAttack <= 2f)
             {
-                this._meleeAttack = true;
                 this._timeAttack = 0f;
-                this._isMeleeAttacking = true;
-                if (this._IsOnDuration)
-                {
-                    this._Issender = true;
-                }
+                this._Issender = true;
+                this._IsOnDuration = true;
             }
         }
         if (DistanceAttack <= 2f)
         {
             this.Boss_ismoving = false;
-            
         }
 
-        if(DistanceAttack > 4f)
+        if(DistanceAttack > 2f)
         {
             this.Boss_ismoving = true;
             this._Issender = false;
+            this._IsOnDuration = false;
         }
     }
-
-        
-    private void HandleAnimationsParameters()
-    {
-        _animator.SetInteger("meleeAttackComboCount", _meleeAttackComboCount);
-
-        if (_rangeAttack)
-        {
-            _animator.SetTrigger("rangeAttack");
-            _rangeAttack = false;
-        }
-
-        if (_meleeAttack)
-        {
-            _animator.SetTrigger("meleeAttack");
-            _meleeAttack = false;
-        }
-        this._animator.SetBool("isHorizontalMoving",this.Boss_ismoving);
-    }
-        
-    private void HandleRangeAttack(){
-        _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
-            
-        InterruptMeleeAttacking();
-        _rangeAttack = true;
-    }
-        
-
-    private void InterruptRangeAttacking()
-    {
-        _rangeAttack = false;
-    }
-
-        
-    private void HandleMeleeAttack()
-    {
-        // We always decrease the meleeComboExpireTimer. This timer is used to know when a combo had expired
-        if (_meleeComboExpireTimer > 0) _meleeComboExpireTimer -= Time.deltaTime;
-
-        // We always decrease the meleeAttackBuffer. This timer is used to buff the attack button press and 
-        // give the player a better response for attack button pressing
-        if (_meleeAttackInputBufferTimer > 0) _meleeAttackInputBufferTimer -= Time.deltaTime;
-            
-        // If we are already attacking we do nothing here
-        if (_isMeleeAttacking) return;
-            
-        // If we have no melee attack input and we have no input buffered, we do nothing here
-            
-        // If we can only melee attack on ground and we are not grounded we do nothing here
-
-        if (_meleeComboExpireTimer <= 0)
-        {
-            _meleeAttackComboCount = 0;
-        }
-
-            
-        _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
-        _meleeAttack = true;
-        _isMeleeAttacking = true;
-
-    }
-        
-        /**
-         * Called by other states that may need to interrupt the meleeAttack before it reaches the finishing point
-         */
-    private void InterruptMeleeAttacking()
-    {
-        _meleeAttack = false;
-        _isMeleeAttacking = false;
-        _meleeAttackComboCount = 0;
-        _meleeComboExpireTimer = 0;
-        _meleeAttackInputBufferTimer = 0;
-    }
-
-        /**
-         * Function to be called by character's animator component to notify the script
-         * that the currently executing attack had finished
-         * In the character "Animation" menu, on the melee attacks animations, there's an "event"
-         * that calls this function at the point we want the character to be able to connect
-         * the next attack combo
-         */
-    private void FinishMeleeAttacking()
-    {
-        _isMeleeAttacking = false;
-        _animator.ResetTrigger("meleeAttack");
-        _meleeComboExpireTimer = maxMeleeComboExpireTimer;
-        _meleeAttackComboCount =
-        _meleeAttackComboCount + 1 > maxMeleeAttackComboCount ? 0 : _meleeAttackComboCount + 1;
-    }
-
     
     protected virtual bool IsDame()
     {
@@ -249,7 +133,6 @@ public class Boss1_Ctl : MyObj
         if(raycastHit2D.collider != null)
         {
             this.ObjDame = raycastHit2D.transform;
-            this._IsOnDuration = true;
             return true;
         }
         this._IsOnDuration = false;
@@ -273,7 +156,6 @@ public class Boss1_Ctl : MyObj
     {
         if (this.IsDame())
         {
-            Debug.Log("1234");
             this.boss1_DameSender.SendDame(this.ObjDame);
         }
     }

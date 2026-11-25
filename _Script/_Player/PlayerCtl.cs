@@ -12,6 +12,7 @@ using UnityEngine.SceneManagement;
 public class PlayerCtl : MyObj
 {
     private HashSet<Collider2D> hitTargets = new HashSet<Collider2D>();
+    [SerializeField]protected LocalsaveManager LocalsaveManager;
     [SerializeField]protected bool SecretKey;
     [SerializeField]protected DameSender dameSender;
     [SerializeField]public Player_ScripTble player_ScripTble;
@@ -92,6 +93,7 @@ public class PlayerCtl : MyObj
             string LoadPath = "_Player/Player";
             this.player_ScripTble = Resources.Load<Player_ScripTble>(LoadPath);
         }
+        if(this.LocalsaveManager == null) this.LocalsaveManager = transform.GetComponent<LocalsaveManager>();
     }
 
     protected virtual void LoadScene_village()
@@ -168,6 +170,7 @@ public class PlayerCtl : MyObj
 
             if(coll.name == "Scene_Farme")
             {
+                this.LocalsaveManager.LoadFromJson();
                 this.SppearPos = new Vector3(0f,0f,0f);
                 SceneManager.LoadScene(coll.name);
 

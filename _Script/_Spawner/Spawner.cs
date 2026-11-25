@@ -69,7 +69,6 @@ public class Spawner : MyObj
             {
                 if(trans.name == Obj.name )
                 {
-                    Debug.Log("few");
                     trans.position = ObjPos;
                     trans.rotation = ObjRotation;
                     this.DicSpawnObj[trans] = trans;

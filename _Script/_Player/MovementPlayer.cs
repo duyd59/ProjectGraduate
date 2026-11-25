@@ -83,6 +83,6 @@ public class Movement : MyObj
         this.Ani.SetFloat("_Hozirontal",Mathf.Abs(InputManger.Instance.Horizontal));
         this.Ani.SetFloat("_Vertical",Mathf.Abs(InputManger.Instance.Vertical));
         this.Ani.SetBool("Attack1",InputManger.Instance.LeftMouse);
-        this.Ani.SetBool("Attack2",InputManger.Instance.RightMouse);
+        this.Ani.SetBool("Guard",InputManger.Instance.RightMouse);
     }
 }

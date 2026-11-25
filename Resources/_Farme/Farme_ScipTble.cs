@@ -11,17 +11,17 @@ public class Farme_ScipTble : ScriptableObject
     public int Experience = 1;
     public int SheepCount;
     public int PigCount;
-    public int CurrentLv = 0;
+    public int FarmeLv = 1;
     public int MaxLv;
     public float CurrentXP;
-    public float MaxXp;
+    public float MaxXp = 10;
     private int BaseXp = 10;
     private float Multiplier = 1.5f;
 
     public void SetMaxXp()
     {
-        this.CurrentXP = this.MaxXp;
-        this.CurrentLv++;
-        this.MaxXp = this.BaseXp *Mathf.Pow(this.Multiplier,(float)this.CurrentLv - 1);
+        this.CurrentXP -= this.MaxXp;
+        this.MaxXp = this.BaseXp *Mathf.Pow(this.Multiplier,(float)this.FarmeLv - 1);
+        this.FarmeLv++;
     }
 }

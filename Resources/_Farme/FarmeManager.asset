@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e9a354e28916ae4dab0c123ce7378b3, type: 3}
   m_Name: FarmeManager
   m_EditorClassIdentifier: 
-  Flower: 0
-  Meat: 0
-  Fur: 0
+  Flower: 17
+  Meat: 12
+  Fur: 8
   Experience: 1
   SheepCount: 6
-  PigCount: 1
-  CurrentLv: 2
-  MaxLv: 30
-  CurrentXP: 10
-  MaxXp: 15
+  PigCount: 3
+  FarmeLv: 4
+  MaxLv: 0
+  CurrentXP: 11.333332
+  MaxXp: 22.5

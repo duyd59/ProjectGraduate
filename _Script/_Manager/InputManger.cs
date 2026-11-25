@@ -19,6 +19,8 @@ public class InputManger : MyObj
     public bool RightMouse => rightMouse;
     [SerializeField]protected bool dig;
     public bool Dig => dig;
+    [SerializeField]protected bool tab;
+    public bool Tab => tab;
 
     [SerializeField]protected bool plant;
     public bool Plant => plant;
@@ -43,6 +45,7 @@ public class InputManger : MyObj
         this.LoadDig();
         this.LoadPlant();
         this.LoadHarvesrt();
+        this.LoadTab();
     }
 
     protected virtual void LoadUnitMovement()
@@ -87,6 +90,14 @@ public class InputManger : MyObj
         }
     }
 
+    protected virtual void LoadTab()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            this.tab = true;
+        }
+    }
+
     protected virtual void LoadHarvesrt()
     {
         if (Input.GetKeyDown(KeyCode.X))
@@ -109,5 +120,10 @@ public class InputManger : MyObj
         {
             this.plant = false;
         }
+    }
+
+    public  virtual void SetTab()
+    {
+        this.tab = false;
     }
 }

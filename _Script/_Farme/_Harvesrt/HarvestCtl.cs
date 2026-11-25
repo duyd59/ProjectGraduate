@@ -42,11 +42,24 @@ public  class HarvestCtl : MyObj
                     PigCtl Harvest = trans.GetComponent<PigCtl>();
                     if(Harvest.IsHarvest == true)
                     {
-                        this.farmeManager.CurrentXp+=Harvest.animal_ScripTble.Xp;
+                        this.farmeManager.farme_ScipTble.CurrentXP+=Harvest.animal_ScripTble.Xp;
+                        this.farmeManager.farme_ScipTble.Meat +=Harvest.animal_ScripTble.Meat;
+                        this.farmeManager.farme_ScipTble.Fur +=Harvest.animal_ScripTble.Fur;
                         Harvest.SetTime();
                     }
                 }
             }
+
+            FarmeSaveDate date = new FarmeSaveDate
+            {
+                Meat = this.farmeManager.farme_ScipTble.Meat,
+                Fur = this.farmeManager.farme_ScipTble.Fur,
+                Flower = this.farmeManager.farme_ScipTble.Flower,
+                FarmeLevel = this.farmeManager.farme_ScipTble.FarmeLv,
+                CurretXp = this.farmeManager.farme_ScipTble.CurrentXP
+            };
+
+            this.farmeManager.LocalsaveManager.SaveToJson(date);
         }
     }
 }

@@ -33,5 +33,7 @@ public class DameSender : DameManager
                 boss2EDameREceiver.DeductHP(1f);
             }
         }
+
+       
     }
 }

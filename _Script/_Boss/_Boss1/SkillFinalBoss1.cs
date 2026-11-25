@@ -9,6 +9,7 @@ public class SkillFinalBoss1 : MyObj
     [SerializeField]protected Boss1_GManager boss1_GManager;
     [SerializeField]protected DameSenderFinalBoss1 dameSenderFinalBoss1;
     [SerializeField]protected SpawnByBoss1 spawnByBoss1;
+    [SerializeField]protected SpawnSkillEffect spawnSkillEffect;
     public  override void LoadComponents()
     {
         base.LoadComponents();
@@ -22,6 +23,7 @@ public class SkillFinalBoss1 : MyObj
     protected virtual void LoadSpawnByBoss1()
     {
         if(this.spawnByBoss1 == null) this.spawnByBoss1 = transform.parent.GetComponentInParent<SpawnByBoss1>();
+        if(this.spawnSkillEffect == null) this.spawnSkillEffect = transform.GetComponent<SpawnSkillEffect>();
     }
 
     protected virtual void LoadDamesender()

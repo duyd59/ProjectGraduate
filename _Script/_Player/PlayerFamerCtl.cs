@@ -120,7 +120,6 @@ public class PlayerFamerCtl : MyObj
             }
             if(this.CanHarvest == true)
             {
-                    Debug.Log("1");
                 if (InputManger.Instance.Harvest)
                 {
                     this.IsSeed = false;
@@ -130,8 +129,20 @@ public class PlayerFamerCtl : MyObj
                         this.Tm_Grass.SetTile(vector3Int,null);                
                     
                     }
-                    this.farmeManager.CurrentXp+=this.cropScripTble.Xp;
+                    this.farmeManager.farme_ScipTble.CurrentXP+=this.cropScripTble.Xp;
+                    this.farmeManager.farme_ScipTble.Flower+=this.cropScripTble.count;
                     this.CanHarvest = false;
+
+                    FarmeSaveDate date = new FarmeSaveDate
+                    {
+                        Meat = this.farmeManager.farme_ScipTble.Meat,
+                        Fur = this.farmeManager.farme_ScipTble.Fur,
+                        Flower = this.farmeManager.farme_ScipTble.Flower,
+                        FarmeLevel = this.farmeManager.farme_ScipTble.FarmeLv,
+                        CurretXp = this.farmeManager.farme_ScipTble.CurrentXP
+                    };
+
+                    this.farmeManager.LocalsaveManager.SaveToJson(date);
                 }
                 
             }

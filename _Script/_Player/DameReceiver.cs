@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DameReceiver : DameManager
 {
@@ -34,14 +35,19 @@ public class DameReceiver : DameManager
         if(this.playerCtl.player_ScripTble.CurrentHp <= 0) this.Isdead = true;
         else
         {
-            Debug.Log("890");
-            this.currentHp-=Hp;
+            this.currentHp-= Hp - (this.playerCtl.player_ScripTble.Guard/2);
         }
     }
 
     public virtual void AddHp(float Hp)
     {
-        
+        if(SceneManager.GetActiveScene().name == "Village")
+        {
+            if(this.currentHp <= this.playerCtl.player_ScripTble.MaxHp)
+            {
+                this.currentHp+=1;  
+            }
+        }
     }
 
     protected virtual void CheckStatus()

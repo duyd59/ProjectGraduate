@@ -7,31 +7,17 @@ using UnityEngine;
 
 public class Boss1_Movements : MyObj
 {
-    [SerializeField]protected Rigidbody2D rigi;
-    [SerializeField]protected CapsuleCollider2D capsule;
     [SerializeField]private Boss1_Ctl boss1_Ctl;
-    [SerializeField]protected float Speed = 0.15f;
+    [SerializeField]protected float Speed = 2f;
     public  override void LoadComponents()
     {
         base.LoadComponents();
-        this.LoadRigidbody();
-        this.LoadCollision();
         this.LoadBossCtl();
     }
 
     protected virtual void LoadBossCtl()
     {
         if(this.boss1_Ctl == null) this.boss1_Ctl= transform.GetComponentInParent<Boss1_Ctl>();
-    }
-
-    protected virtual void LoadRigidbody()
-    {
-        if(this.rigi == null) this.rigi = transform.parent.GetComponent<Rigidbody2D>();
-    }
-
-    protected virtual void LoadCollision()
-    {
-        if(this.capsule == null) this.capsule = transform.parent.GetComponent<CapsuleCollider2D>();
     }
 
 
@@ -43,19 +29,31 @@ public class Boss1_Movements : MyObj
     protected virtual void Moving()
     {
         if(this.boss1_Ctl.boss1_GManager.TargetObj == null)return;
-        if(this.boss1_Ctl.Boss_ismoving == true)
+        float Distancemove = Vector3.Distance(transform.position,this.boss1_Ctl.boss1_GManager.TargetObj.position);
+        Debug.Log(Distancemove);
+        if(Distancemove <= 2f)
         {
-            transform.parent.position = Vector3.MoveTowards(transform.parent.position,this.boss1_Ctl.boss1_GManager.TargetObj.position,this.Speed);
-            
-            this.ControlFace(this.boss1_Ctl.boss1_GManager.TargetObj.position.x);
-            if(this.boss1_Ctl._meleeAttack == true) this.Speed = 0.15f;
-            else
-            {
-                this.Speed = 0.15f;
-            }
+            this.Speed = 0;
         }
-        
-        
+        if(Distancemove <= 2f)
+        {
+            this.Speed = 5f;
+        }
+        Vector3 targetPos = this.boss1_Ctl.boss1_GManager.TargetObj.position;
+        Vector3 toPlayer = targetPos - transform.parent.position;
+        Vector3 moveTarget = targetPos;
+            float angleDeg = Mathf.Atan2(toPlayer.y, toPlayer.x) * Mathf.Rad2Deg;
+            float wrappedDeg = (angleDeg + 360f) % 360f;
+            int dirIndex = Mathf.FloorToInt((wrappedDeg + 22.5f) / 45f) % 8;
+            float snappedRad = dirIndex * 45f * Mathf.Deg2Rad;
+
+            Vector3 snappedDir = new Vector2(Mathf.Cos(snappedRad), Mathf.Sin(snappedRad));
+            moveTarget = transform.parent.position + snappedDir * (this.Speed * Time.fixedDeltaTime);
+
+        float step = this.Speed * Time.fixedDeltaTime;
+        this.transform.parent.position = Vector3.MoveTowards(transform.parent.position, moveTarget, step);
+        this.ControlFace(this.boss1_Ctl.boss1_GManager.TargetObj.position.x);
+
     }
 
     protected virtual void ControlFace(float X)

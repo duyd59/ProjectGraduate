@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SpawnByBoss1 : Spawner
 {
@@ -52,5 +53,14 @@ public class SpawnByBoss1 : Spawner
     public void Init(Vector3 target)
     {
         this.TargetPos = (target - this.AttackPos).normalized;
+    }
+
+    public virtual void GetBySpawn(Transform trans)
+    {
+        if(SceneManager.GetActiveScene().name == "Boss")
+        {
+            Spawning(ListObj[2],trans.position,trans.rotation);
+            
+        }
     }
 }

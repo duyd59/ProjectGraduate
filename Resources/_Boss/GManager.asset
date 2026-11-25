@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: GManager
   m_EditorClassIdentifier: 
   MaxHp: 0
+  Dame: 0
   CurrentHp: 0
   Amor: 0
-  _TimeAttack: 3
-  _TimeSkill: 15
-  _TimeMax: 30
+  _TimeAttack: 1
+  _TimeSkill: 5
+  _TimeMax: 20

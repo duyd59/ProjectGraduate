@@ -13,6 +13,7 @@ public class SkillByBoss1 : SkillFinalBoss1
         float distance = Vector3.Distance(transform.position,this.spawnByBoss1.TarGetSkill);
         if (distance <= 0.5f)
         {
+            this.spawnByBoss1.GetBySpawn(transform);
             this.spawnByBoss1.AddPool(transform);
             transform.gameObject.SetActive(false);
         }

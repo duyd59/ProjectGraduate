@@ -12,6 +12,7 @@ public class Player_ScripTble : ScriptableObject
     public float MaxHp = 100f;
     public float Amor = 10f;
     public int Xp;
+    public float Guard = 10;
 
     public virtual void ResetInfo()
     {
