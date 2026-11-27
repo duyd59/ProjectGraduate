@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49cd1afd8261ca541b692b7bb5b04b81, type: 3}
   m_Name: 0
   m_EditorClassIdentifier: 
-  MaxHp: 100
+  MaxHp: 10
   Dame: 1
-  CurrentHp: 100
+  CurrentHp: 10
   Amor: 0
   _TimeAttack: 0
   _TimeSkill: 0

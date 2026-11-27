@@ -85,7 +85,6 @@ public class Boss1_Ctl : MyObj
 
     protected virtual void SetAni()
     {
-        Debug.Log(this._IsOnDuration);
         this._animator.SetBool("_IsattackRight",this._IsOnDuration);
     }
     private void GetInput()

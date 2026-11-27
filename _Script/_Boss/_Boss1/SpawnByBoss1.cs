@@ -57,10 +57,10 @@ public class SpawnByBoss1 : Spawner
 
     public virtual void GetBySpawn(Transform trans)
     {
-        if(SceneManager.GetActiveScene().name == "Boss")
-        {
+        //if(SceneManager.GetActiveScene().name == "Boss")
+        //{
             Spawning(ListObj[2],trans.position,trans.rotation);
             
-        }
+        //}
     }
 }

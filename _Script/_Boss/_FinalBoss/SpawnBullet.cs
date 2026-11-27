@@ -12,6 +12,7 @@ public class SpawnBullet : Spawner
     [SerializeField]protected float ShootTimeMax = 1f;
     [SerializeField]public Transform Postank;
     [SerializeField]protected float ShootTimeCurrent;
+    [SerializeField]protected Transform TankHolder;
     private Coroutine activeRoutine;
     public override void LoadComponents()
     {
@@ -24,6 +25,22 @@ public class SpawnBullet : Spawner
         if(this.boss1_GManager == null)
         {
             this.boss1_GManager = transform.parent.GetComponent<Boss1_GManager>();
+        }
+        if(this.TankHolder == null)
+        {
+            foreach(Transform trans in transform.parent)
+            {
+                if(trans.name == "TankDefense")
+                {
+                    foreach(Transform transf in trans)
+                    {
+                        if(transf.name == "Holder")
+                        {
+                            this.TankHolder = transf;
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -55,7 +72,10 @@ public class SpawnBullet : Spawner
     public virtual void BulletByTank(Transform tank)
     {
         this.Postank = tank;
-        Transform Bullettank = this.Spawning(this.ListObj[1],tank.position,tank.rotation);
+        //Transform Bullettank = this.Spawning(this.ListObj[1],tank.position,tank.rotation);
+        Transform Bullettank  = Instantiate(this.ListObj[1],tank.position,tank.rotation);
+        Bullettank.SetParent(this.TankHolder,false);
+        Bullettank.gameObject.SetActive(true);
         // if(tank.position.x < 0)
         // {
         //     Bullettank.localScale = new Vector3(tank.localScale.x*-1,tank.localScale.y,tank.localScale.z);

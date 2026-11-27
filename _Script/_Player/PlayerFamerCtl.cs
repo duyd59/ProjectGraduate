@@ -118,6 +118,10 @@ public class PlayerFamerCtl : MyObj
                     
                 }
             }
+            // if (InputManger.Instance.Plant)
+            // {
+            //     this.Tm_Grass.SetTile(MyPOs,Tb_Seed);                
+            // }
             if(this.CanHarvest == true)
             {
                 if (InputManger.Instance.Harvest)

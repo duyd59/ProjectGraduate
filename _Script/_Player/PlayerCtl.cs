@@ -127,12 +127,12 @@ public class PlayerCtl : MyObj
                     this.Canloadscene = true;
                     this.TArgetScene = coll.transform;
                 }
-                else if(!(SceneManager.GetActiveScene().name == "Scene_Tutorial"))
+                if(!(SceneManager.GetActiveScene().name == "Scene_Tutorial"))
                 {
-                    Debug.Log("4235325");
                     SceneManager.LoadScene(coll.name);
 
                 }
+        
             }
             if(coll.name == "Scene_Tutorial")
             {
@@ -161,7 +161,7 @@ public class PlayerCtl : MyObj
                 this.Canloadscene = true;
                 this.TArgetScene = coll.transform;
             }
-            if(coll.name == "Boss")
+            if(coll.name == "FinalBoss")
             {
                 this.SppearPos = new Vector3(0.2f,-8f,0f);
                 this.Canloadscene = true;
@@ -195,6 +195,7 @@ public class PlayerCtl : MyObj
 
         if(raycastHit2D.collider != null)
         {
+            Debug.Log("Boss Dame");
             this.ObjDame = raycastHit2D.transform;
             return true;
         }

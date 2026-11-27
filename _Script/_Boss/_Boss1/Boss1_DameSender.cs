@@ -25,7 +25,7 @@ public class Boss1_DameSender : MyObj
         {
             if (this.boss1_Ctl._Issender)
             {
-                dameReceiver.Deduct(1);
+                dameReceiver.Deduct(boss1_Ctl.Boss_ScripTble.Dame);
                 this.boss1_Ctl._Issender = false;
             }
             

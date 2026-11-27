@@ -30,7 +30,6 @@ public class Boss1_Movements : MyObj
     {
         if(this.boss1_Ctl.boss1_GManager.TargetObj == null)return;
         float Distancemove = Vector3.Distance(transform.position,this.boss1_Ctl.boss1_GManager.TargetObj.position);
-        Debug.Log(Distancemove);
         if(Distancemove <= 2f)
         {
             this.Speed = 0;

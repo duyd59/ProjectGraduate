@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Boss1_DameReceiver : MyObj
 {
@@ -37,7 +38,7 @@ public class Boss1_DameReceiver : MyObj
 
     public virtual void Deduct(float Hp)
     {
-        if(this.boss1_Ctl.Boss_ScripTble.CurrentHp <= 0) this.Isdead = true;
+        if(this.currentHp <= 0) this.Isdead = true;
         else
         {
             this.currentHp-=Hp;
@@ -53,8 +54,24 @@ public class Boss1_DameReceiver : MyObj
     {
         if(this.Isdead == true)
         {
-            Debug.Log("you dead");
             this.Isdead= false;
+            transform.parent.gameObject.SetActive(false);
+        }
+    }
+
+    protected virtual void OnDisable()
+    {
+        PlayerCtl playerCtl = this.boss1_Ctl.boss1_GManager.TargetObj.GetComponent<PlayerCtl>();
+        if(playerCtl != null)
+        {
+            if(SceneManager.GetActiveScene().name == "Boss_1")
+            {
+                 playerCtl.player_ScripTble.boss1 = true;
+            }
+            if(SceneManager.GetActiveScene().name == "Boss_2")
+            {
+                 playerCtl.player_ScripTble.boss2 = true;
+            }
         }
     }
 }

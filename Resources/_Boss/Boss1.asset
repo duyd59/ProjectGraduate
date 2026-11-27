@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49cd1afd8261ca541b692b7bb5b04b81, type: 3}
   m_Name: Boss1
   m_EditorClassIdentifier: 
-  MaxHp: 100
-  Amor: 10
+  MaxHp: 5
+  Dame: 15
+  CurrentHp: 100
+  Amor: 0
   _TimeAttack: 3
   _TimeSkill: 10
+  _TimeMax: 30

@@ -35,7 +35,11 @@ public class DameReceiver : DameManager
         if(this.playerCtl.player_ScripTble.CurrentHp <= 0) this.Isdead = true;
         else
         {
-            this.currentHp-= Hp - (this.playerCtl.player_ScripTble.Guard/2);
+            float DeHp = Hp - (this.playerCtl.player_ScripTble.Guard/2);
+            if(DeHp > 0)
+            {
+                this.currentHp -= DeHp;
+            }
         }
     }
 
